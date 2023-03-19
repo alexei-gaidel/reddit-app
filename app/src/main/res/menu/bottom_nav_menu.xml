@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:menuCategory="secondary"
+        android:title=""
+        android:icon="@drawable/subreddits_unchecked" />
+
+    <item
+        android:id="@+id/navigation_favorite"
+        android:menuCategory="secondary"
+        android:icon="@drawable/favorite_unchecked"
+        android:title="" />
+
+    <item
+        android:id="@+id/navigation_my_profile"
+        android:menuCategory="secondary"
+        android:icon="@drawable/profile_unchecked"
+        android:title="" />
+
+</menu>
