@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import ru.gas.humblr.R
 import ru.gas.humblr.databinding.FragmentMyProfileBinding
 import ru.gas.humblr.domain.model.LoadingState
@@ -140,7 +139,4 @@ class MyProfileFragment : Fragment(), AppUtils {
         _binding = null
     }
 
-//    companion object {
-//        const val USERNAME = "userName"
-//    }
 }

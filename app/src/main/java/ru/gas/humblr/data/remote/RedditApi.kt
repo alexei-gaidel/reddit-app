@@ -4,12 +4,12 @@ import retrofit2.http.*
 import ru.gas.humblr.data.remote.models.*
 
 interface RedditApi {
+
     @GET("api/v1/me")
-    suspend fun getCurrentUser(
-    ) : CurrentUserDto
+    suspend fun getCurrentUser(): CurrentUserDto
 
     @GET("/api/v1/me/friends")
-    suspend fun getFriends() : FriendsListDto
+    suspend fun getFriends(): FriendsListDto
 
     @GET("/user/{userName}/saved")
     suspend fun getAllSavedThings(@Path("userName") userName: String): SubredditPostsDto
@@ -20,8 +20,6 @@ interface RedditApi {
     @GET("/user/{userName}/saved?type=comments&&raw_json=1")
     suspend fun getSavedComments(@Path("userName") userName: String?): SavedCommentsDto
 
-
-//    @GET("r/all/new?raw_json=1")
     @GET("new?raw_json=1")
     suspend fun getNewSubreddits(@Query("limit") limit: Int?, @Query("after") page: String?)
             : SubredditListItemDto
@@ -58,13 +56,17 @@ interface RedditApi {
     suspend fun getUser(@Path("userName") userName: String): UserDto
 
     @PUT("/api/v1/me/friends/{userName}")
-    suspend fun makeFriends (@Path("userName") userName:String?, @Body requestBody: String)
+    suspend fun makeFriends(@Path("userName") userName: String?, @Body requestBody: String)
 
     @DELETE("/api/v1/me/friends/{userName}")
-    suspend fun unfriend (@Path("userName") userName:String?)
+    suspend fun unfriend(@Path("userName") userName: String?)
 
-    @GET("/user/{userName}/comments?raw_json=1")
-    suspend fun getUserComments (@Path("userName") userName:String?, @Query("after")page:String) : UserCommentsDto
+    @GET("/user/{userName}/comments")
+    suspend fun getUserComments(
+        @Path("userName") userName: String?,
+        @Query("after") page: String,
+        @Query("limit") limit: Int?
+    ): UserCommentsDto
 
     companion object {
         val BASE_URL = "https://oauth.reddit.com"

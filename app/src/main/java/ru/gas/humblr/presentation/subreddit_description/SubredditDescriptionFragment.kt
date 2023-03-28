@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import ru.gas.humblr.R
 import ru.gas.humblr.databinding.FragmentSubredditDescriptionBinding
 import ru.gas.humblr.domain.model.LoadingState
@@ -30,8 +29,7 @@ class SubredditDescriptionFragment : Fragment(), AppUtils {
     private val viewModel: SubredditDescriptionViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentSubredditDescriptionBinding.inflate(inflater, container, false)
@@ -47,17 +45,16 @@ class SubredditDescriptionFragment : Fragment(), AppUtils {
 
         binding.myToolbar.setNavigationOnClickListener {
             findNavController().popBackStack(
-                R.id.navigation_subreddit_description,
-                inclusive = true
+                R.id.navigation_subreddit_description, inclusive = true
             )
         }
+
         binding.shareIcon.setOnClickListener {
             val i = Intent(Intent.ACTION_SEND)
             i.type = "text/plain"
             i.putExtra(Intent.EXTRA_TEXT, REDDIT_SHARE_URI + subredditId)
             startActivity(Intent.createChooser(i, getString(R.string.share_url)))
         }
-
 
         if (subredditId != null) {
             viewModel.loadSubredditInfo(subredditId)
@@ -67,30 +64,22 @@ class SubredditDescriptionFragment : Fragment(), AppUtils {
 
                     if (subredditInfo?.bannerImg != null) {
                         binding.bannerImage.isVisible = true
-                        Glide
-                            .with(binding.bannerImage.context)
-                            .load(subredditInfo.bannerImg)
-                            .centerCrop()
-                            .into(binding.bannerImage)
-
-
+                        Glide.with(binding.bannerImage.context).load(subredditInfo.bannerImg)
+                            .centerCrop().into(binding.bannerImage)
                     }
 
                     if (subredditInfo?.iconImg != null) {
                         binding.iconImage.isVisible = true
-                        Glide
-                            .with(binding.iconImage.context)
-                            .load(subredditInfo.iconImg)
-                            .centerCrop()
-                            .into(binding.iconImage)
-
+                        Glide.with(binding.iconImage.context).load(subredditInfo.iconImg)
+                            .centerCrop().into(binding.iconImage)
                     }
+
                     var isSubscribedString =
                         if (subredditInfo?.userIsSubscriber == true) getString(R.string.yes) else getString(
                             R.string.no
                         )
                     var subscribers = "0"
-                    subredditInfo?.subscribers?.let { count->
+                    subredditInfo?.subscribers?.let { count ->
                         subscribers = getFormattedNumber(count)
                     }
                     with(binding) {
@@ -98,26 +87,20 @@ class SubredditDescriptionFragment : Fragment(), AppUtils {
                         description.text = subredditInfo?.description
                         subredditTitle.text = subredditInfo?.title
                         subscribersCount.text = String.format(
-                            resources.getString(R.string.subscribers),
-                            subscribers
+                            resources.getString(R.string.subscribers), subscribers
                         )
                         subredditInfo?.created?.let { dateLong ->
-
                             created.text = String.format(
                                 resources.getString(
-                                    R.string.created,
-                                    dateLong.toDate()
+                                    R.string.created, dateLong.toDate()
 
                                 )
                             )
                         }
 
-
                         subscriberStatus.text = String.format(
-                            resources.getString(R.string.you_are_subscribed),
-                            isSubscribedString
+                            resources.getString(R.string.you_are_subscribed), isSubscribedString
                         )
-
 
                         changeSubscriptionButton.setOnClickListener {
                             val subscribeState = viewModel.subscribeState.value
@@ -136,26 +119,17 @@ class SubredditDescriptionFragment : Fragment(), AppUtils {
                                             )
                                         }
                                         false -> {
-                                            isSubscribedString =
-                                                resources.getString(R.string.no)
+                                            isSubscribedString = resources.getString(R.string.no)
                                             subscriberStatus.text = String.format(
                                                 resources.getString(R.string.you_are_subscribed),
                                                 isSubscribedString
                                             )
                                         }
-
                                     }
                                 }
-
                             }
-
                         }
                     }
-
-
-
-
-
 
                     viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                         viewModel.loadingState.collect { state ->
@@ -170,27 +144,24 @@ class SubredditDescriptionFragment : Fragment(), AppUtils {
                                 }
                                 is LoadingState.Error -> {
                                     binding.infoProgress.isVisible = false
-                                    Toast.makeText(context, R.string.loading_failed, Toast.LENGTH_SHORT)
-                                        .show()
-
+                                    Toast.makeText(
+                                        context, R.string.loading_failed, Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
-
                         }
                     }
-
                 }
             }
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-    companion object{
-//        const val SUBREDDIT_ID = "subredditId"
+
+    companion object {
         const val REDDIT_SHARE_URI = "https://www.reddit.com/r/"
     }
 

@@ -21,16 +21,12 @@ data class UserDto(
 
 @JsonClass(generateAdapter = true)
 data class UserData(
-    @Json(name = "is_friend")
-    val isFriend: Boolean?,
-    @Json(name = "icon_img")
-    val iconImg: String?,
-    @Json(name = "total_karma")
-    val totalKarma: Long?,
+    @Json(name = "is_friend") val isFriend: Boolean?,
+    @Json(name = "icon_img") val iconImg: String?,
+    @Json(name = "total_karma") val totalKarma: Long?,
     val name: String?,
     val created: Double?,
-    @Json(name = "snoovatar_img")
-    val snoovatarImg: String?,
+    @Json(name = "snoovatar_img") val snoovatarImg: String?,
 )
 
 

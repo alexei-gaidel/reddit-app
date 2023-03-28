@@ -9,10 +9,12 @@ interface AppUtils {
         val sdf = SimpleDateFormat("dd-MM-yyyy")
         return sdf.format(this * 1000L)
     }
+
     fun Double.toDate(): String {
         val sdf = SimpleDateFormat("dd-MM-yyyy")
         return sdf.format(this * 1000L)
     }
+
     fun getFormattedNumber(count: Long): String {
         if (count < 1000) return "" + count
         val exp = (ln(count.toDouble()) / ln(1000.0)).toInt()

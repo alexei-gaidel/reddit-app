@@ -17,9 +17,7 @@ data class SubredditListItemDto(
                 id = item.data.subreddit,
                 subscribed = false
             )
-
         }
-
     }
 }
 
@@ -31,20 +29,17 @@ data class Data(
 
 @JsonClass(generateAdapter = true)
 data class ChildA(
-    val kind: String?,
-    val data: ChildData
+    val kind: String?, val data: ChildData
 )
 
 @JsonClass(generateAdapter = true)
 data class ChildData(
     val subreddit: String?,
     val title: String?,
-    @Json(name = "subreddit_name_prefixed")
-    val subredditNamePrefixed: String?,
+    @Json(name = "subreddit_name_prefixed") val subredditNamePrefixed: String?,
     val name: String?,
     val preview: Preview?,
-    @Json(name = "subreddit_id")
-    val subredditId: String?
+    @Json(name = "subreddit_id") val subredditId: String?
 )
 
 
@@ -61,8 +56,6 @@ data class Image(
 
 @JsonClass(generateAdapter = true)
 data class ResizedIcon(
-    val url: String,
-    val width: Long,
-    val height: Long
+    val url: String, val width: Long, val height: Long
 )
 

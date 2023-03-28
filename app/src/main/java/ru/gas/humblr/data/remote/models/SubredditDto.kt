@@ -6,8 +6,7 @@ import ru.gas.humblr.domain.model.Subreddit
 
 @JsonClass(generateAdapter = true)
 data class SubredditDto(
-    val kind: String,
-    val data: SubredditData
+    val kind: String, val data: SubredditData
 ) {
     fun toSubreddit(): Subreddit {
         return Subreddit(
@@ -26,19 +25,13 @@ data class SubredditDto(
 
 @JsonClass(generateAdapter = true)
 data class SubredditData(
-    @Json(name = "display_name")
-    val displayName: String?,
+    @Json(name = "display_name") val displayName: String?,
     val title: String?,
     val subscribers: Long?,
-    @Json(name = "created_utc")
-    val created: Long?,
-    @Json(name = "user_is_subscriber")
-    val userIsSubscriber: Boolean,
-    @Json(name = "banner_img")
-    val bannerImg: String?,
-    @Json(name = "icon_img")
-    val iconImg: String?,
-    @Json(name = "public_description")
-    val description: String?
+    @Json(name = "created_utc") val created: Long?,
+    @Json(name = "user_is_subscriber") val userIsSubscriber: Boolean,
+    @Json(name = "banner_img") val bannerImg: String?,
+    @Json(name = "icon_img") val iconImg: String?,
+    @Json(name = "public_description") val description: String?
 )
 

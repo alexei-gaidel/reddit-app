@@ -19,7 +19,6 @@ data class UserCommentsDto(
                     score = it.data.score,
                     created = it.data.created,
                     name = it.data.name
-
                 )
             )
         }
@@ -30,31 +29,26 @@ data class UserCommentsDto(
 
 @JsonClass(generateAdapter = true)
 data class UserCommentsData(
-    val children: List<Comments> = listOf(),
-    val after: String?
-
+    val children: List<Comments> = listOf(), val after: String?
 )
 
 @JsonClass(generateAdapter = true)
 data class Comments(
     val data: CommentsData,
-    )
+)
 
 @JsonClass(generateAdapter = true)
 data class CommentsData(
     val title: String?,
     val selftext: String?,
-    @Json(name = "subreddit_name_prefixed")
-    val subredditNamePrefixed: String?,
+    @Json(name = "subreddit_name_prefixed") val subredditNamePrefixed: String?,
     val num_comments: Long?,
     val score: Long?,
     val likes: Boolean?,
     val author: String?,
     val name: String,
-    @Json(name = "url")
-    val postImg: String?,
-    @Json(name = "created_utc")
-    val created: Double?,
+    @Json(name = "url") val postImg: String?,
+    @Json(name = "created_utc") val created: Double?,
     val body: String?,
     val preview: Preview?
 )

@@ -28,7 +28,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataModule {
 
-
     @Provides
     fun provideAuthRepository(): AuthRepository {
         return AuthRepository()
@@ -80,6 +79,5 @@ object DataModule {
             .client(okhttpClient)
             .build()
             .create(RedditApi::class.java)
-
     }
 }

@@ -17,7 +17,6 @@ class SubredditPostsAdapter(
 
     fun setData(data: List<SubredditPostsItem>) {
         this.data = data
-//        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubredditPostsViewHolder {
@@ -36,10 +35,7 @@ class SubredditPostsAdapter(
 
             if (item?.img != null) {
                 subredditPreview.isVisible = true
-                Glide
-                    .with(subredditPreview.context)
-                    .load(item.img)
-                    .centerCrop()
+                Glide.with(subredditPreview.context).load(item.img).centerCrop()
                     .into(subredditPreview)
             }
 
@@ -56,7 +52,6 @@ class SubredditPostsAdapter(
 
     override fun getItemCount(): Int = data.size
 }
-
 
 class SubredditPostsViewHolder(val binding: PostsListItemBinding) :
     RecyclerView.ViewHolder(binding.root)

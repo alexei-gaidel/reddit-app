@@ -1,20 +1,20 @@
 package ru.gas.humblr.presentation.user_profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.gas.humblr.R
 import ru.gas.humblr.databinding.FragmentUserProfileBinding
 import ru.gas.humblr.domain.model.LoadingState
@@ -26,13 +26,11 @@ class UserProfileFragment : Fragment(), AppUtils {
 
     private var _binding: FragmentUserProfileBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: UserProfileViewModel by viewModels()
     private val pagingAdapter = UserCommentsListAdapter { comment -> saveComment(comment) }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
@@ -54,26 +52,19 @@ class UserProfileFragment : Fragment(), AppUtils {
 
         }
 
-
-        var isFriend = viewModel.userInfo.value?.isFriend
-
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.userInfo.collect { user ->
-
+                var isFriend = user?.isFriend
                 binding.userName.text = user?.name
                 val created = user?.created?.toDate()
                 binding.created.text = String.format(resources.getString(R.string.since, created))
                 val karma = user?.karma.toString()
                 binding.karma.text = String.format(
-                    resources.getString(R.string.karma),
-                    karma
+                    resources.getString(R.string.karma), karma
                 )
 
                 user?.icon?.let {
-                    Glide
-                        .with(binding.userIcon.context)
-                        .load(it)
-                        .centerCrop()
+                    Glide.with(binding.userIcon.context).load(it).centerCrop()
                         .into(binding.userIcon)
                 }
                 if (user?.isFriend == true) {
@@ -101,8 +92,7 @@ class UserProfileFragment : Fragment(), AppUtils {
                             binding.isFriend.text = resources.getString(R.string.not_a_friend)
                             binding.friendsBar.setCardBackgroundColor(
                                 ContextCompat.getColor(
-                                    binding.friendsBar.context,
-                                    R.color.secondary
+                                    binding.friendsBar.context, R.color.secondary
                                 )
                             )
                         }
@@ -113,21 +103,18 @@ class UserProfileFragment : Fragment(), AppUtils {
                             binding.isFriend.text = resources.getString(R.string.is_a_friend)
                             binding.friendsBar.setCardBackgroundColor(
                                 ContextCompat.getColor(
-                                    binding.friendsBar.context,
-                                    R.color.friends_bar
+                                    binding.friendsBar.context, R.color.friends_bar
                                 )
                             )
                         }
                     }
-
                 }
             }
         }
 
         binding.myToolbar.setNavigationOnClickListener {
             findNavController().popBackStack(
-                R.id.navigation_user_profile,
-                inclusive = true
+                R.id.navigation_user_profile, inclusive = true
             )
         }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -148,8 +135,6 @@ class UserProfileFragment : Fragment(), AppUtils {
                 }
             }
         }
-
-
     }
 
     private fun saveComment(comment: String?) {
@@ -165,8 +150,4 @@ class UserProfileFragment : Fragment(), AppUtils {
         super.onDestroy()
         _binding = null
     }
-//    companion object {
-//        const val USERNAME = "userName"
-//    }
-
 }

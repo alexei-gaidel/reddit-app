@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import ru.gas.humblr.R
 import ru.gas.humblr.databinding.FragmentSubredditPostBinding
 import ru.gas.humblr.domain.model.LoadingState
@@ -29,11 +28,11 @@ class SubredditPostFragment : Fragment(), AppUtils {
     private val binding get() = _binding!!
 
     private val viewModel: SubredditPostViewModel by viewModels()
-    private val adapter = CommentsListAdapter({userName -> navigateToUserProfile(userName)}, {comment-> saveComment(comment)})
+    private val adapter = CommentsListAdapter({ userName -> navigateToUserProfile(userName) },
+        { comment -> saveComment(comment) })
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentSubredditPostBinding.inflate(inflater, container, false)
@@ -58,8 +57,7 @@ class SubredditPostFragment : Fragment(), AppUtils {
 
         binding.myToolbar.setNavigationOnClickListener {
             findNavController().popBackStack(
-                R.id.navigation_subreddit_post,
-                inclusive = true
+                R.id.navigation_subreddit_post, inclusive = true
             )
         }
 
@@ -81,10 +79,8 @@ class SubredditPostFragment : Fragment(), AppUtils {
                     is LoadingState.Error -> {
                         binding.progressBar.isVisible = false
                         Toast.makeText(context, R.string.failed, Toast.LENGTH_SHORT).show()
-
                     }
                 }
-
             }
         }
 
@@ -108,7 +104,9 @@ class SubredditPostFragment : Fragment(), AppUtils {
                 binding.saveText.setOnClickListener {
                     viewModel.saveSinglePost(post?.id, {
                         Toast.makeText(context, R.string.post_saved, Toast.LENGTH_SHORT).show()
-                    }, { Toast.makeText(context, R.string.saving_failed, Toast.LENGTH_SHORT).show() })
+                    }, {
+                        Toast.makeText(context, R.string.saving_failed, Toast.LENGTH_SHORT).show()
+                    })
                 }
 
 
@@ -116,8 +114,7 @@ class SubredditPostFragment : Fragment(), AppUtils {
                     val bundle = Bundle()
                     bundle.putString(NavArgs.POST.key, postId)
                     findNavController().navigate(
-                        R.id.action_subreddit_post_to_post_all_comments,
-                        bundle
+                        R.id.action_subreddit_post_to_post_all_comments, bundle
                     )
                 }
                 binding.postTitle.text = post?.title
@@ -133,10 +130,7 @@ class SubredditPostFragment : Fragment(), AppUtils {
                 }
                 post?.image?.let {
                     binding.titleImg.isVisible = true
-                    Glide
-                        .with(binding.titleImg.context)
-                        .load(it)
-                        .centerCrop()
+                    Glide.with(binding.titleImg.context).load(it).centerCrop()
                         .into(binding.titleImg)
                 }
                 var score = post?.score ?: 0
@@ -164,15 +158,12 @@ class SubredditPostFragment : Fragment(), AppUtils {
                                 }
                             }
                             null -> {
-                                viewModel.castVote(it, UP)
-                                {
+                                viewModel.castVote(it, UP) {
                                     votingState.value = true
                                     score += INC_IF_UNVOTED
                                     binding.score.text = score.toString()
                                     binding.upArrow.setImageResource(R.drawable.arrow_up_checked)
-
                                 }
-
                             }
                         }
                     }
@@ -208,27 +199,22 @@ class SubredditPostFragment : Fragment(), AppUtils {
                                     score -= INC_IF_UNVOTED
                                     binding.score.text = score.toString()
                                     binding.downArrow.setImageResource(R.drawable.arrow_down_checked)
-
                                 }
-
                             }
                         }
-
                     }
                 }
 
 
                 val comments = getFormattedNumber(post?.numComments ?: 0)
                 binding.commentsCount.text = String.format(
-                    resources.getString(R.string.comments),
-                    comments
+                    resources.getString(R.string.comments), comments
                 )
 
                 post?.created?.let { dateLong ->
                     binding.created.text = String.format(
                         resources.getString(
-                            R.string.created,
-                            dateLong.toDate()
+                            R.string.created, dateLong.toDate()
                         )
                     )
                 }
@@ -245,37 +231,32 @@ class SubredditPostFragment : Fragment(), AppUtils {
     private fun saveComment(comment: String?) {
         if (comment != null) {
             viewModel.saveSingleComment(comment, {
-                Toast.makeText(context, getString(R.string.comment_saved), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.comment_saved), Toast.LENGTH_SHORT)
+                    .show()
             }, { Toast.makeText(context, R.string.saving_failed, Toast.LENGTH_SHORT).show() })
         }
     }
-
-
-
 
     private fun navigateToUserProfile(userName: String?) {
         val bundle = Bundle()
         bundle.putString(NavArgs.USERNAME.key, userName)
         findNavController().navigate(
-            R.id.action_subreddit_post_to_user_profile,
-            bundle
+            R.id.action_subreddit_post_to_user_profile, bundle
         )
     }
-
 
     companion object {
         const val DOWN = "down"
         const val UP = "up"
         const val UNVOTE = "unvote"
-//        const val POST_ID = "postId"
-//        const val USERNAME = "userName"
-        //If comments>2 "Show All" button
+
+        //If comments > 2 "Show All" button
         const val FIRST_COMMENTS_COUNT = 2
+
         // Score increment if user didn't voted
         const val INC_IF_UNVOTED = 1
+
         // Score increment if user already voted in opposite direction (up to down, down to up)
         const val INC_IF_VOTED = 2
-
     }
-
 }

@@ -26,15 +26,10 @@ class AuthRepository {
         val redirectUri = Uri.parse(AuthConfig.CALLBACK_URL)
 
         return AuthorizationRequest.Builder(
-            serviceConfiguration,
-            AuthConfig.CLIENT_ID,
-            AuthConfig.RESPONSE_TYPE,
-            redirectUri
-        )
-            .setState(AuthConfig.STATE)
+            serviceConfiguration, AuthConfig.CLIENT_ID, AuthConfig.RESPONSE_TYPE, redirectUri
+        ).setState(AuthConfig.STATE)
             .setAdditionalParameters(mapOf(Pair(DURATION, AuthConfig.DURATION)))
-            .setScope(AuthConfig.SCOPE)
-            .build()
+            .setScope(AuthConfig.SCOPE).build()
 
     }
 
@@ -46,16 +41,15 @@ class AuthRepository {
     }
 
 
-    fun performRequestToken(code: String, authService: AuthorizationService, onSuccess:()->Unit) {
+    fun performRequestToken(
+        code: String, authService: AuthorizationService, onSuccess: () -> Unit
+    ) {
 
         val clientAuth: ClientAuthentication = ClientSecretBasic(AuthConfig.CLIENT_SECRET)
         authService.performTokenRequest(
             TokenRequest.Builder(serviceConfiguration, AuthConfig.CLIENT_ID)
-                .setAuthorizationCode(code)
-                .setRedirectUri(AuthConfig.CALLBACK_URL.toUri())
-                .setGrantType(GrantTypeValues.AUTHORIZATION_CODE)
-                .build(),
-            clientAuth
+                .setAuthorizationCode(code).setRedirectUri(AuthConfig.CALLBACK_URL.toUri())
+                .setGrantType(GrantTypeValues.AUTHORIZATION_CODE).build(), clientAuth
         ) { response, exception ->
             if (response != null) {
                 TokenStorage.accessToken = response.accessToken
@@ -79,9 +73,7 @@ class AuthRepository {
             authService.performTokenRequest(
                 TokenRequest.Builder(serviceConfiguration, AuthConfig.CLIENT_ID)
                     .setGrantType(GrantTypeValues.REFRESH_TOKEN)
-                    .setRefreshToken(TokenStorage.refreshToken)
-                    .build(),
-                clientAuth
+                    .setRefreshToken(TokenStorage.refreshToken).build(), clientAuth
             ) { response, ex ->
                 when {
                     response != null -> {
@@ -100,6 +92,7 @@ class AuthRepository {
             }
         }
     }
+
     companion object {
         const val DURATION = "duration"
     }

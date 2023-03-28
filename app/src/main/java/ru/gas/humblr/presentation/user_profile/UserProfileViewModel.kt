@@ -50,7 +50,6 @@ class UserProfileViewModel @Inject constructor(
             pagingSourceFactory = { userCommentsListDataSource }).flow
     }
 
-
     fun loadUserInfo(userName: String) {
         viewModelScope.launch {
             _loadingState.value = LoadingState.Loading()
@@ -67,33 +66,32 @@ class UserProfileViewModel @Inject constructor(
 
 
     fun makeFriends(userName: String?, onSuccess: () -> Unit) {
-        viewModelScope.launch {
-            kotlin.runCatching {
+        var error: Exception? = null
+        viewModelScope.launch() {
+            try {
                 addToFriends(userName)
-            }.onSuccess {
+            } catch (e: Exception) {
+                error = e
+            } finally {
+                if (error == null) {
                     onSuccess()
-                }.onFailure {
-                    if (_userInfo.value?.isFriend == true) {
-                        onSuccess()
-                    }
                 }
+            }
         }
     }
 
     fun unfriend(userName: String?, onSuccess: () -> Unit) {
-        viewModelScope.launch {
-            kotlin.runCatching {
+        var error: Throwable? = null
+        viewModelScope.launch() {
+            try {
                 removeFromFriends(userName)
-                if (_userInfo.value?.isFriend == false) {
+            } catch (e: Exception) {
+                error = e.cause
+            } finally {
+                if (error == null) {
                     onSuccess()
                 }
-            }.onSuccess {
-                    onSuccess()
-                }.onFailure {
-                    if (_userInfo.value?.isFriend == false) {
-                        onSuccess()
-                    }
-                }
+            }
         }
     }
 }

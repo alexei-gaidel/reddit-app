@@ -1,6 +1,6 @@
 package ru.gas.humblr.authorization
 
-//import timber.log.Timber
+
 import kotlinx.coroutines.runBlocking
 import net.openid.appauth.AuthorizationService
 import okhttp3.Interceptor
@@ -44,7 +44,10 @@ class AuthorizationFailedInterceptor @Inject constructor(
                 originalResponse
             )
                 ?: originalResponse
-            tokenUpdateTime > requestTimestamp -> updateTokenAndProceedChain(chain, originalResponse)
+            tokenUpdateTime > requestTimestamp -> updateTokenAndProceedChain(
+                chain,
+                originalResponse
+            )
             else -> handleTokenNeedRefresh(chain, originalResponse) ?: originalResponse
         }
     }

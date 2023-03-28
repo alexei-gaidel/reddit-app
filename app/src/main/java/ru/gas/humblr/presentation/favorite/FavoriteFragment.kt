@@ -26,13 +26,10 @@ class FavoriteFragment : Fragment() {
     private val viewModel: FavoriteViewModel by viewModels()
     private val postsAdapter = SavedPostsListAdapter { userName -> onPostClick(userName) }
     private val commentsAdapter =
-        CommentsListAdapter({ userName -> navigateToUserProfile(userName) },
-            { saveComment() })
+        CommentsListAdapter({ userName -> navigateToUserProfile(userName) }, { saveComment() })
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
@@ -84,8 +81,7 @@ class FavoriteFragment : Fragment() {
         val bundle = Bundle()
         bundle.putString(POST_ID, item)
         findNavController().navigate(
-            R.id.action_favorite_to_subreddit_post,
-            bundle
+            R.id.action_favorite_to_subreddit_post, bundle
         )
 
     }
@@ -101,8 +97,7 @@ class FavoriteFragment : Fragment() {
         val bundle = Bundle()
         bundle.putString(USERNAME, userName)
         findNavController().navigate(
-            R.id.action_favorite_to_user_profile,
-            bundle
+            R.id.action_favorite_to_user_profile, bundle
         )
     }
 
@@ -136,10 +131,12 @@ class FavoriteFragment : Fragment() {
         super.onStop()
         ChipState.selectedPosition = binding.postsCommentsSelector.checkedChipId
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     companion object {
         const val USERNAME = "userName"
         const val POST_ID = "postId"

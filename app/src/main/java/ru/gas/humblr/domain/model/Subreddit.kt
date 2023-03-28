@@ -9,5 +9,4 @@ data class Subreddit(
     val title: String?,
     val userIsSubscriber: Boolean,
     val created: Long?
-
 )

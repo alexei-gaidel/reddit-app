@@ -5,18 +5,14 @@ import ru.gas.humblr.domain.model.Friend
 
 @JsonClass(generateAdapter = true)
 data class FriendsListDto(
-    val kind: String,
-    val data: FriendsData
+    val kind: String, val data: FriendsData
 ) {
     fun toFriendsList(): List<Friend> {
         val friendsList = mutableListOf<Friend>()
         this.data.children.onEach {
-            friendsList
-                .add(
+            friendsList.add(
                     Friend(
-                        name = it.name,
-                        created = it.date,
-                        icon = null
+                        name = it.name, created = it.date, icon = null
                     )
                 )
         }

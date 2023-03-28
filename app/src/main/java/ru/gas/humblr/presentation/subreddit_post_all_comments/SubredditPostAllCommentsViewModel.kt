@@ -50,8 +50,5 @@ class SubredditPostAllCommentsViewModel @Inject constructor(
                 _loadingState.value = LoadingState.Error()
             }
         }
-
     }
-
-
 }

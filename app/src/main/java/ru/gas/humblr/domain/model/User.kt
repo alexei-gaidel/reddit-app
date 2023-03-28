@@ -6,5 +6,4 @@ data class User(
     val isFriend: Boolean?,
     val icon: String?,
     val karma: Long?
-
 )

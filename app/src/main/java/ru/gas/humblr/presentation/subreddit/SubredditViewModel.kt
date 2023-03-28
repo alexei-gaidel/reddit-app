@@ -34,6 +34,5 @@ class SubredditViewModel @Inject constructor(private val getSubredditPosts: GetS
                 _loadingState.value = LoadingState.Error()
             }
         }
-
     }
 }

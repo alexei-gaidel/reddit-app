@@ -1,6 +1,5 @@
 package ru.gas.humblr.presentation.home
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ru.gas.humblr.data.remote.RemoteRepository
@@ -9,8 +8,7 @@ import javax.inject.Inject
 
 class PopSubredditsDataSource @Inject constructor(
     private val repository: RemoteRepository,
-) :
-    PagingSource<String, SubredditListItem>() {
+) : PagingSource<String, SubredditListItem>() {
 
     override fun getRefreshKey(state: PagingState<String, SubredditListItem>): String = FIRST_PAGE
 
@@ -20,31 +18,23 @@ class PopSubredditsDataSource @Inject constructor(
         return kotlin.runCatching {
             repository.getPopularSubreddits(page)
 
-        }.fold(
-            onSuccess = { response ->
-                Log.d("paging", "POP response.data.children.size == ${response.data.children.size}")
-                if (response.data.children.isEmpty()) {
-                    LoadResult.Page(
-                        data = listOf(),
-                        prevKey = null,
-                        nextKey = null
-                    )
-                } else {
-                    val subreddits = response.toSubredditList().onEach {
-                        val isSubscribed = repository.getSubscription(it.id)
-                        it.subscribed = isSubscribed
-                    }
-                    LoadResult.Page(
-                        data = subreddits,
-                        prevKey = null,
-                        nextKey = response.data.after ?: ""
-                    )
+        }.fold(onSuccess = { response ->
+            if (response.data.children.isEmpty()) {
+                LoadResult.Page(
+                    data = listOf(), prevKey = null, nextKey = null
+                )
+            } else {
+                val subreddits = response.toSubredditList().onEach {
+                    val isSubscribed = repository.getSubscription(it.id)
+                    it.subscribed = isSubscribed
                 }
-            },
-            onFailure = {
-                LoadResult.Error(it)
+                LoadResult.Page(
+                    data = subreddits, prevKey = null, nextKey = response.data.after ?: ""
+                )
             }
-        )
+        }, onFailure = {
+            LoadResult.Error(it)
+        })
     }
 
     companion object {

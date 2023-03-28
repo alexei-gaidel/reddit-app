@@ -16,12 +16,10 @@ class FriendsListAdapter(private val onUserNameClick: (String) -> Unit) :
 
     fun setData(data: List<Friend?>) {
         this.data = data
-//        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsListViewHolder {
-        val binding =
-            FriendItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = FriendItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FriendsListViewHolder(binding)
     }
 
@@ -29,17 +27,13 @@ class FriendsListAdapter(private val onUserNameClick: (String) -> Unit) :
         val item = data.getOrNull(position)
         with(holder.binding) {
             userName.text = item?.name
-            created.text = String.format(created.context.getString(ru.gas.humblr.R.string.since),
-                item?.created?.toDate()
+            created.text = String.format(
+                created.context.getString(ru.gas.humblr.R.string.since), item?.created?.toDate()
             )
 
             userName.paintFlags = userName.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
-            Glide
-                .with(userIcon.context)
-                .load(item?.icon)
-                .centerCrop()
-                .into(userIcon)
+            Glide.with(userIcon.context).load(item?.icon).centerCrop().into(userIcon)
 
             userName.setOnClickListener {
                 item?.name?.let {
@@ -54,5 +48,4 @@ class FriendsListAdapter(private val onUserNameClick: (String) -> Unit) :
 }
 
 
-class FriendsListViewHolder(val binding: FriendItemBinding) :
-    RecyclerView.ViewHolder(binding.root)
+class FriendsListViewHolder(val binding: FriendItemBinding) : RecyclerView.ViewHolder(binding.root)

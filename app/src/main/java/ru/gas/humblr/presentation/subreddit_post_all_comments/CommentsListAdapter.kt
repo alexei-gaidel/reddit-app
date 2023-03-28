@@ -9,21 +9,17 @@ import ru.gas.humblr.domain.model.CommentListItem
 import ru.gas.humblr.domain.utils.AppUtils
 
 class CommentsListAdapter(
-    private val onUserNameClick: (String) -> Unit,
-    private val onSaveClick: (String?) -> Unit
-) :
-    RecyclerView.Adapter<CommentsListViewHolder>(), AppUtils {
+    private val onUserNameClick: (String) -> Unit, private val onSaveClick: (String?) -> Unit
+) : RecyclerView.Adapter<CommentsListViewHolder>(), AppUtils {
 
     private var data: List<CommentListItem> = emptyList()
 
     fun setData(data: List<CommentListItem>) {
         this.data = data
-//        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsListViewHolder {
-        val binding =
-            CommentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CommentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CommentsListViewHolder(binding)
     }
 
@@ -48,10 +44,8 @@ class CommentsListAdapter(
 
     }
 
-
     override fun getItemCount(): Int = data.size
 }
-
 
 class CommentsListViewHolder(val binding: CommentItemBinding) :
     RecyclerView.ViewHolder(binding.root)

@@ -19,8 +19,7 @@ class SubredditDescriptionViewModel @Inject constructor(
     private val getSubredditInfo: GetSubredditInfo,
     private val getSubscribed: GetSubscribed,
     private val getUnsubscribed: GetUnsubscribed
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _loadingState = MutableStateFlow<LoadingState<Any?>>(LoadingState.Loading())
     val loadingState = _loadingState.asStateFlow()

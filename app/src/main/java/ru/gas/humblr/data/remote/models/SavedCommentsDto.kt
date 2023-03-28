@@ -9,7 +9,6 @@ data class SavedCommentsDto(
     val data: SavedCommentsData?
 ) {
     fun toSavedCommentList(): List<CommentListItem> {
-
         val comments = this.data?.children
         val commentsList = mutableListOf<CommentListItem>()
         comments?.onEach {
@@ -29,8 +28,7 @@ data class SavedCommentsDto(
 
 @JsonClass(generateAdapter = true)
 data class SavedCommentsData(
-    val children: List<SavedComment> = listOf(),
-    val after: String?
+    val children: List<SavedComment> = listOf(), val after: String?
 
 )
 
@@ -44,8 +42,7 @@ data class SavedCommentData(
     val score: Long?,
     val author: String?,
     val name: String,
-    @Json(name = "created_utc")
-    val created: Double?,
+    @Json(name = "created_utc") val created: Double?,
     val body: String?
 )
 

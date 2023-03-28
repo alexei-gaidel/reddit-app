@@ -23,15 +23,13 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
-
     private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val navController =
-            findNavController(R.id.nav_host_fragment_activity_main)
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         val navView: BottomNavigationView = binding.navView
         navView.setupWithNavController(navController)
@@ -45,17 +43,20 @@ class MainActivity : AppCompatActivity() {
             getPreferences(MODE_PRIVATE).getBoolean(NavArgs.ONBOARDED.key, false)
 
 
-
         val getAuthResponse =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 val dataIntent = it.data ?: return@registerForActivityResult
                 if (Uri.parse(dataIntent.toString()).getQueryParameter("error") != null) {
 
                     if (it.resultCode == RESULT_OK) {
-                        Toast.makeText(applicationContext, getString(R.string.success), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            applicationContext, getString(R.string.success), Toast.LENGTH_SHORT
+                        ).show()
                     }
                     if (it.resultCode == RESULT_CANCELED) {
-                        Toast.makeText(applicationContext, getString(R.string.failure), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            applicationContext, getString(R.string.failure), Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -79,19 +80,12 @@ class MainActivity : AppCompatActivity() {
 
                                         navController.navigate(R.id.navigation_main)
                                         navView.isVisible = true
-
-
                                     }
-
-
                                 }
                             }
                         }
-
                     }
-
                 }
-
             }
         }
     }
@@ -106,9 +100,9 @@ class MainActivity : AppCompatActivity() {
             apply()
         }
     }
-    companion object{
+
+    companion object {
         const val ACCESS_TOKEN = "accessToken"
         const val REFRESH_TOKEN = "refreshToken"
-//        const val ONBOARDED = "onboarded"
     }
 }

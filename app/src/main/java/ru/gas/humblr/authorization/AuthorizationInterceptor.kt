@@ -1,11 +1,11 @@
 package ru.gas.humblr.authorization
 
-import ru.gas.humblr.data.remote.models.TokenStorage
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import ru.gas.humblr.data.remote.models.TokenStorage
 
-class AuthorizationInterceptor: Interceptor {
+class AuthorizationInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.request()

@@ -14,8 +14,7 @@ class UserCommentsListAdapter(private val onSaveClick: (String?) -> Unit) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserCommentsListViewHolder {
-        val binding =
-            CommentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CommentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return UserCommentsListViewHolder(binding)
     }
 
@@ -44,5 +43,4 @@ class DiffutilCallback : DiffUtil.ItemCallback<CommentListItem>() {
 
     override fun areContentsTheSame(oldItem: CommentListItem, newItem: CommentListItem): Boolean =
         oldItem == newItem
-
 }

@@ -19,9 +19,7 @@ data class SubredditPostsDto(
                 subscribed = false,
                 postId = item.data?.postId
             )
-
         }
-
     }
 
     fun toThingsList(): List<String> {
@@ -30,7 +28,6 @@ data class SubredditPostsDto(
             it.data?.name?.let { thingsList.add(it) }
         }
         return thingsList
-
     }
 }
 
@@ -41,22 +38,18 @@ data class DataX(
 
 @JsonClass(generateAdapter = true)
 data class ChildX(
-    val kind: String?,
-    val data: ChildDataX?
+    val kind: String?, val data: ChildDataX?
 )
 
 @JsonClass(generateAdapter = true)
 data class ChildDataX(
     val subreddit: String?,
     val title: String?,
-    @Json(name = "subreddit_name_prefixed")
-    val subredditNamePrefixed: String?,
-    @Json(name = "id")
-    val postId: String?,
+    @Json(name = "subreddit_name_prefixed") val subredditNamePrefixed: String?,
+    @Json(name = "id") val postId: String?,
     val name: String?,
     val preview: Preview?,
-    @Json(name = "subreddit_id")
-    val subredditId: String?
+    @Json(name = "subreddit_id") val subredditId: String?
 )
 
 
@@ -73,9 +66,7 @@ data class ImagXe(
 
 @JsonClass(generateAdapter = true)
 data class ResizedIconX(
-    val url: String,
-    val width: Long,
-    val height: Long
+    val url: String, val width: Long, val height: Long
 )
 
 

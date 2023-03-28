@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 class RemoteRepository @Inject constructor(private val redditApi: RedditApi) {
 
-
     private suspend fun getFormattedPostComments(post: String): PostCommentsResponse {
         val rawResponse = redditApi.getRawPostComments(post)
         val formattedResponse = rawResponse.replace("\"replies\": \"\"", "\"replies\": null")
@@ -25,10 +24,9 @@ class RemoteRepository @Inject constructor(private val redditApi: RedditApi) {
         return gson.fromJson(formattedResponse, PostCommentsResponse::class.java)
     }
 
-
     suspend fun getUserComments(userName: String?, page: String)
             : UserCommentsDto {
-        return redditApi.getUserComments(userName, page)
+        return redditApi.getUserComments(userName, page, COMMENTS_LIMIT)
     }
 
     suspend fun getFriends(): List<Friend> {
@@ -72,32 +70,9 @@ class RemoteRepository @Inject constructor(private val redditApi: RedditApi) {
         return redditApi.unsave(id)
     }
 
-//    suspend fun getNewSubreddits(page: String)
-//    :SubredditListItemDto
-//    {
-//        return redditApi.getNewSubreddits(
-//            PAGES_LIMIT,
-//            page)
-//
-//    }
-//    suspend fun getNewSubreddits(page: String): List<SubredditListItem> {
-//        return redditApi.getNewSubreddits(PAGES_LIMIT, page).toSubredditList().onEach {
-//            val isSubscribed = getSubscription(it.id)
-//            it.subscribed = isSubscribed
-//        }
-//    }
-
-//    suspend fun getPopularSubreddits(): List<SubredditListItem> {
-//        return redditApi.getPopularSubreddits(PAGE_SIZE).toSubredditList().onEach {
-//            val isSubscribed = getSubscription(it.id)
-//            it.subscribed = isSubscribed
-//        }
-//    }
-
     suspend fun getSubredditPosts(subreddit: String): List<SubredditPostsItem> {
         return redditApi.getSubredditPosts(subreddit).toSubredditPostsList()
     }
-
 
     suspend fun getSavedThings(userName: String): List<String> {
         return redditApi.getAllSavedThings(userName).toThingsList()
@@ -128,13 +103,15 @@ class RemoteRepository @Inject constructor(private val redditApi: RedditApi) {
     }
 
     suspend fun getNewSubreddits(page: String): SubredditListItemDto {
-        return redditApi.getNewSubreddits(PAGES_LIMIT,page)
+        return redditApi.getNewSubreddits(PAGES_LIMIT, page)
     }
+
     suspend fun getPopularSubreddits(page: String): SubredditListItemDto {
-        return redditApi.getPopularSubreddits(PAGES_LIMIT,page)
+        return redditApi.getPopularSubreddits(PAGES_LIMIT, page)
     }
 
     companion object {
         private const val PAGES_LIMIT = 12
+        private const val COMMENTS_LIMIT = 50
     }
 }

@@ -24,8 +24,7 @@ class AuthScreen : Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentAuthScreenBinding.inflate(inflater, container, false)
@@ -42,7 +41,4 @@ class AuthScreen : Fragment() {
         super.onDestroy()
         _binding = null
     }
-//    companion object{
-//        const val ONBOARDED = "onboarded"
-//    }
 }

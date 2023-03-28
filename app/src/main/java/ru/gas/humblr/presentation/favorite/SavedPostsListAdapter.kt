@@ -17,12 +17,10 @@ class SavedPostsListAdapter(private val onItemClick: (String) -> Unit) :
 
     fun setData(data: List<PostItem>) {
         this.data = data
-//        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostListViewHolder {
-        val binding =
-            PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostListViewHolder(binding)
     }
 
@@ -31,8 +29,7 @@ class SavedPostsListAdapter(private val onItemClick: (String) -> Unit) :
         with(holder.binding) {
             val comments = getFormattedNumber(item?.numComments ?: 0)
             commentsCount.text = String.format(
-                commentsCount.context.getString(R.string.comments),
-                comments
+                commentsCount.context.getString(R.string.comments), comments
             )
             author.text = item?.author
             created.text = item?.created?.toDate()
@@ -45,11 +42,7 @@ class SavedPostsListAdapter(private val onItemClick: (String) -> Unit) :
 
             item?.image.let {
                 titleImg.isVisible = true
-                Glide
-                    .with(titleImg.context)
-                    .load(it)
-                    .centerCrop()
-                    .into(titleImg)
+                Glide.with(titleImg.context).load(it).centerCrop().into(titleImg)
             }
             holder.binding.root.setOnClickListener {
                 item?.id?.let {
@@ -67,5 +60,4 @@ class SavedPostsListAdapter(private val onItemClick: (String) -> Unit) :
 }
 
 
-class PostListViewHolder(val binding: PostItemBinding) :
-    RecyclerView.ViewHolder(binding.root)
+class PostListViewHolder(val binding: PostItemBinding) : RecyclerView.ViewHolder(binding.root)

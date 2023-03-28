@@ -7,10 +7,8 @@ import ru.gas.humblr.domain.model.CommentListItem
 import javax.inject.Inject
 
 class UserCommentsListDataSource @Inject constructor(
-    private val repository: RemoteRepository,
-    private val userName: String
-) :
-    PagingSource<String, CommentListItem>() {
+    private val repository: RemoteRepository, private val userName: String
+) : PagingSource<String, CommentListItem>() {
 
     override fun getRefreshKey(state: PagingState<String, CommentListItem>): String = FIRST_PAGE
 
@@ -20,31 +18,24 @@ class UserCommentsListDataSource @Inject constructor(
         return kotlin.runCatching {
             repository.getUserComments(userName, page)
 
-        }.fold(
-            onSuccess = { response ->
-                if (response.data?.children?.size!! < PAGE_SIZE) {
-                    LoadResult.Page(
-                        data = listOf(),
-                        prevKey = null,
-                        nextKey = null
-                    )
-                } else {
-                    val comments = response.toUserComments()
-                    LoadResult.Page(
-                        data = comments,
-                        prevKey = null,
-                        nextKey = response.data.after ?: ""
-                    )
-                }
-            },
-            onFailure = {
-                LoadResult.Error(it)
+        }.fold(onSuccess = { response ->
+            if (response.data?.children?.size!! < PAGE_SIZE) {
+                LoadResult.Page(
+                    data = listOf(), prevKey = null, nextKey = null
+                )
+            } else {
+                val comments = response.toUserComments()
+                LoadResult.Page(
+                    data = comments, prevKey = null, nextKey = response.data?.after ?: ""
+                )
             }
-        )
+        }, onFailure = {
+            LoadResult.Error(it)
+        })
     }
 
     companion object {
         private const val FIRST_PAGE = ""
-        const val PAGE_SIZE = 10
+        const val PAGE_SIZE = 50
     }
 }

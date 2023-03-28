@@ -6,7 +6,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import ru.gas.humblr.data.remote.RemoteRepository
@@ -35,13 +34,13 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getUserSubscribed(subreddit: String?) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch() {
             getSubscribed(subreddit)
         }
     }
 
     fun getUserUnsubscribed(subreddit: String?) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch() {
             getUnsubscribed(subreddit)
         }
     }

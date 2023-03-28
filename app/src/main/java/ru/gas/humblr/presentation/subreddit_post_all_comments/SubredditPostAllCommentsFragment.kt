@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ru.gas.humblr.R
 import ru.gas.humblr.databinding.FragmentSubredditPostAllCommentsBinding
 import ru.gas.humblr.domain.model.LoadingState
@@ -31,8 +30,7 @@ class SubredditPostAllCommentsFragment : Fragment(), AppUtils {
     private val viewModel: SubredditPostAllCommentsViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSubredditPostAllCommentsBinding.inflate(inflater, container, false)
         return binding.root
@@ -46,8 +44,7 @@ class SubredditPostAllCommentsFragment : Fragment(), AppUtils {
         binding.commentsRecycler.adapter = adapter
         binding.myToolbar.setNavigationOnClickListener {
             findNavController().popBackStack(
-                R.id.navigation_post_all_comments,
-                inclusive = true
+                R.id.navigation_post_all_comments, inclusive = true
             )
         }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -90,16 +87,9 @@ class SubredditPostAllCommentsFragment : Fragment(), AppUtils {
         }
     }
 
-
     private fun onUserNameClicked(userName: String) {
         val bundle = Bundle()
         bundle.putString(NavArgs.USERNAME.key, userName)
         findNavController().navigate(R.id.action_ost_all_comments_to_user_profile, bundle)
     }
-
-//    companion object {
-//        const val POST_ID = "postId"
-//        const val USERNAME = "userName"
-//    }
-
 }

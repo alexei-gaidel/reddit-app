@@ -1,13 +1,14 @@
 package ru.gas.humblr.presentation.my_profile
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.gas.humblr.domain.model.*
+import ru.gas.humblr.domain.model.Friend
+import ru.gas.humblr.domain.model.LoadingState
+import ru.gas.humblr.domain.model.User
 import ru.gas.humblr.domain.usecase.*
 import javax.inject.Inject
 
@@ -29,8 +30,7 @@ class MyProfileViewModel @Inject constructor(
     val friendsInfo = _friendsInfo.asStateFlow()
 
     fun deleteSavedThings(
-        onSuccess: () -> Unit,
-        onFailure: () -> Unit
+        onSuccess: () -> Unit, onFailure: () -> Unit
     ) {
         viewModelScope.launch {
             kotlin.runCatching {
@@ -38,14 +38,12 @@ class MyProfileViewModel @Inject constructor(
 
             }.onSuccess {
                 deleteThing(it, onSuccess, onFailure)
-            }.onFailure { Log.d("lll", "getsaved posts onFailure${it.localizedMessage}") }
+            }
         }
     }
 
     private fun deleteThing(
-        list: List<String>?,
-        onSuccess: () -> Unit,
-        onFailure: () -> Unit
+        list: List<String>?, onSuccess: () -> Unit, onFailure: () -> Unit
     ) {
         viewModelScope.launch {
             kotlin.runCatching {
@@ -76,8 +74,7 @@ class MyProfileViewModel @Inject constructor(
             }.onSuccess {
                 _friendsInfo.value = it
                 loadFriendsIcons { onSuccess() }
-            }.onFailure {
-            }
+            }.onFailure {}
         }
     }
 

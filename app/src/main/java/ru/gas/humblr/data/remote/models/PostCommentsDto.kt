@@ -8,8 +8,7 @@ import ru.gas.humblr.domain.model.PostItem
 
 @JsonClass(generateAdapter = true)
 data class PostCommentsResponse(
-    val postResponse: PostResponse,
-    val commentsResponse: CommentsResponse
+    val postResponse: PostResponse, val commentsResponse: CommentsResponse
 )
 
 @JsonClass(generateAdapter = true)
@@ -19,7 +18,6 @@ data class PostResponse(
     fun toSavedPostList(): List<PostItem> {
 
         val posts = this.data?.children
-        Log.d("eee", "this.data?.children? ${this.data?.children}")
         val postList = mutableListOf<PostItem>()
         posts?.onEach {
             postList.add(
@@ -42,7 +40,6 @@ data class PostResponse(
     fun toPostItem(): PostItem {
 
         val post = this.data?.children?.first()
-        Log.d("eee", "this.data?.children? ${this.data?.children}")
 
         post.apply {
             return PostItem(
@@ -65,29 +62,12 @@ data class PostResponse(
 data class CommentsResponse(
     val data: PostData?
 ) {
-    fun toSavedCommentList(): List<CommentListItem> {
-
-        val comments = this.data?.children
-        val commentsList = mutableListOf<CommentListItem>()
-        comments?.onEach {
-            commentsList.add(
-                CommentListItem(
-                    author = it.data.author,
-                    body = it.data.body,
-                    score = it.data.score,
-                    created = it.data.created,
-                    name = it.data.name
-                )
-            )
-        }
-        return commentsList
-    }
 
     fun toCommentList(): List<CommentListItem> {
 
         val comments = this.data?.children
-        var allComments = mutableListOf<Comment>()
-        var temp = mutableListOf<Comment>()
+        val allComments = mutableListOf<Comment>()
+        val temp = mutableListOf<Comment>()
         comments?.let { comments ->
             temp.addAll(comments)
         }
@@ -112,7 +92,6 @@ data class CommentsResponse(
         comment.data.replies?.data?.children?.let { replies ->
             if (replies.isNotEmpty()) {
                 replies.forEach { comment ->
-                    Log.d("eee", "comment for each getReplies")
                     allComments.addAll(getReplies(comment))
                 }
             }
@@ -127,12 +106,9 @@ data class PostCommentsDto(
     val data: PostData?
 )
 
-
 @JsonClass(generateAdapter = true)
 data class PostData(
-    val children: List<Comment> = listOf(),
-    val after: String?
-
+    val children: List<Comment> = listOf(), val after: String?
 )
 
 @JsonClass(generateAdapter = true)
@@ -145,27 +121,14 @@ data class Comment(
 data class CommentData(
     val title: String? = null,
     val selftext: String? = null,
-
-    @Json(name = "subreddit_name_prefixed")
-    val subredditNamePrefixed: String?,
-
+    @Json(name = "subreddit_name_prefixed") val subredditNamePrefixed: String?,
     val num_comments: Long?,
-
     val score: Long?,
-
     val likes: Boolean?,
-
     val author: String?,
-
-
     val name: String,
-
-    @Json(name = "url")
-    val postImg: String? = null,
-
-    @Json(name = "created_utc")
-    val created: Double?,
-
+    @Json(name = "url") val postImg: String? = null,
+    @Json(name = "created_utc") val created: Double?,
     val replies: Replies?,
     val body: String? = null,
     val preview: Preview?

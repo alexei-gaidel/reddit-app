@@ -28,7 +28,6 @@ class SubredditPostViewModel @Inject constructor(
     val loadingState = _loadingState.asStateFlow()
     private val _comments = MutableStateFlow<List<CommentListItem>>(emptyList())
     val comments = _comments.asStateFlow()
-
     private val _post = MutableStateFlow<PostItem?>(null)
     val post = _post.asStateFlow()
 
@@ -76,7 +75,6 @@ class SubredditPostViewModel @Inject constructor(
         }
     }
 
-
     fun loadComments(post: String, onSuccess: (List<CommentListItem>) -> Unit) {
         viewModelScope.launch {
             _loadingState.value = LoadingState.Loading()
@@ -93,7 +91,6 @@ class SubredditPostViewModel @Inject constructor(
         }
     }
 
-
     fun loadPost(post: String) {
         viewModelScope.launch {
             kotlin.runCatching {
@@ -105,5 +102,4 @@ class SubredditPostViewModel @Inject constructor(
             }
         }
     }
-
 }

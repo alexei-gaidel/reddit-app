@@ -7,15 +7,11 @@ import ru.gas.humblr.domain.model.User
 @JsonClass(generateAdapter = true)
 data class CurrentUserDto(
 
-    @Json(name = "icon_img")
-    val iconImg: String,
-
-    @Json(name = "total_karma")
-    val totalKarma: Long,
-
+    @Json(name = "icon_img") val iconImg: String,
+    @Json(name = "total_karma") val totalKarma: Long,
     val name: String,
     val created: Double,
-    ) {
+) {
     fun toUser(): User {
         return User(
             name = this.name,
